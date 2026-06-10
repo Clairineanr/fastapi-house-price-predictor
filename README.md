@@ -104,6 +104,6 @@ FastAPI sudah menyediakan Swagger UI bawaan. Buka:
 
 `http://127.0.0.1:8000/docs`
 
-Di sana kamu bisa coba endpoint langsung lewat browser.
+Di sana bisa coba endpoint langsung lewat browser.
 
 `notebook_latihan.ipynb` hanya dipakai saat training model, bukan saat menjalankan API.
