@@ -23,7 +23,7 @@ pip install fastapi uvicorn scikit-learn pandas numpy joblib
 
 ## Menjalankan server
 
-Jalankan perintah berikut dari folder `final`:
+Jalankan perintah berikut dari folder:
 
 ```bash
 uvicorn main:app --reload
