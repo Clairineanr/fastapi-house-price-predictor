@@ -1,6 +1,10 @@
 from pydantic import BaseModel
-from predictor import predict
 from fastapi import FastAPI
+
+try:
+    from .predictor import predict
+except ImportError:
+    from predictor import predict
 
 app = FastAPI(
     title="API Prediksi Harga Rumah",

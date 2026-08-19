@@ -11,12 +11,14 @@ REQUIRED_COLUMNS = [
     'jarak_pusat_kota'
 ]
 
-# Dapatkan direktori tempat file ini berada
+# Dapatkan direktori root proyek dan direktori models
 SCRIPT_DIR = Path(__file__).parent
+BASE_DIR = SCRIPT_DIR.parent
+MODELS_DIR = BASE_DIR / 'models'
 
 def load_model(model_path: str = None):
     if model_path is None:
-        model_path = SCRIPT_DIR / 'model_harga_rumah.pkl'
+        model_path = MODELS_DIR / 'model_harga_rumah.pkl'
     try:
         model = joblib.load(model_path)
         return model
@@ -28,7 +30,7 @@ def load_model(model_path: str = None):
 
 def load_scaler(scaler_path: str = None):
     if scaler_path is None:
-        scaler_path = SCRIPT_DIR / 'scaler_harga_rumah.pkl'
+        scaler_path = MODELS_DIR / 'scaler_harga_rumah.pkl'
     try:
         scaler = joblib.load(scaler_path)
         return scaler

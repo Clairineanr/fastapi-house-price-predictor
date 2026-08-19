@@ -1,62 +1,75 @@
 # API Prediksi Harga Rumah
 
-Project ini berisi API FastAPI sederhana untuk memprediksi harga rumah dari beberapa fitur properti. Model yang dipakai adalah Linear Regression.
+Project ini berisi API FastAPI untuk memprediksi harga rumah berdasarkan beberapa fitur properti menggunakan model Machine Learning (Linear Regression).
 
-## File penting
+## Struktur Direktori Project
 
 ```text
-├── main.py                # Aplikasi FastAPI
-├── predictor.py           # Load model, preprocessing, dan prediksi
-├── model_harga_rumah.pkl  # Model terlatih
-├── scaler_harga_rumah.pkl # Scaler untuk data input
-├── notebook_latihan.ipynb # Notebook untuk training
-└── README.md
+fastapi-house-price-predictor/
+├── app/                        # Source code utama aplikasi FastAPI
+│   ├── __init__.py
+│   ├── main.py                 # FastAPI endpoints & Pydantic schema
+│   └── predictor.py            # Logika preprocessing & inferensi model ML
+├── data/                       # Penyimpanan dataset ML
+│   ├── raw/                    # Dataset mentah (CSV/JSON)
+│   └── processed/              # Dataset bersih / hasil olahan
+├── models/                     # Artifacts biner ML terlatih
+│   ├── model_harga_rumah.pkl   # Model Linear Regression (.pkl)
+│   └── scaler_harga_rumah.pkl  # StandardScaler (.pkl)
+├── notebooks/                  # Jupyter Notebook untuk eksplorasi data
+│   └── notebook_latihan.ipynb  # Notebook EDA & pelatihan model
+├── reports/                    # Laporan bisnis & media grafik visualisasi
+│   ├── images/                 # Grafik plot hasil render (300 DPI)
+│   └── laporan-productionizing-machine-learning-model-transformasi-kode-monolitik-ke-web-service-komersial-api.pdf
+├── .gitignore                  # Filter file temporary / Pycache
+├── requirements.txt            # Dependency Python proyek
+└── README.md                   # Laporan utama & dokumentasi petunjuk API
 ```
 
-## Install dependency
+---
 
-Kalau Python sudah siap, install paket ini dulu:
+## Install Dependency
+
+Sebelum menjalankan API, install dependensi yang dibutuhkan:
 
 ```bash
-pip install fastapi uvicorn scikit-learn pandas numpy joblib
+pip install -r requirements.txt
 ```
 
-## Menjalankan server
+---
 
-Jalankan perintah berikut dari folder:
+## Menjalankan Server
+
+Jalankan perintah berikut dari root direktori proyek:
 
 ```bash
-uvicorn main:app --reload
+uvicorn app.main:app --reload
 ```
 
-Kalau server sudah hidup, buka:
+Setelah server aktif, buka browser di alamat:
+- **Root URL**: `http://127.0.0.1:8000`
+- **Swagger Documentation**: `http://127.0.0.1:8000/docs`
 
-`http://127.0.0.1:8000`
+---
 
-## Endpoint
+## Endpoint API
 
-### `GET /`
+### 1. `GET /`
+Digunakan untuk mengecek status keaktifan server.
 
-Dipakai untuk cek apakah server sudah aktif.
-
-Contoh respons:
-
+**Contoh Respons:**
 ```json
 {
   "pesan": "API Prediksi Harga Rumah aktif. Gunakan endpoint POST /predict."
 }
 ```
 
-### `POST /predict`
+### 2. `POST /predict`
+Mengirimkan data fitur properti dalam format JSON untuk mendapatkan estimasi harga rumah.
 
-Kirim data properti dalam format JSON, lalu API akan mengembalikan hasil prediksi.
+**URL Endpoint:** `http://127.0.0.1:8000/predict`
 
-URL:
-
-`http://127.0.0.1:8000/predict`
-
-Contoh request:
-
+**Contoh Request Payload:**
 ```json
 {
   "luas_tanah": 150,
@@ -67,8 +80,7 @@ Contoh request:
 }
 ```
 
-Contoh respons sukses:
-
+**Contoh Respons Sukses:**
 ```json
 {
   "status": "success",
@@ -77,8 +89,7 @@ Contoh respons sukses:
 }
 ```
 
-Kalau ada field yang kurang, hasilnya akan seperti ini:
-
+**Contoh Respons Error (Misal Input Kurang / Tipe Data Salah):**
 ```json
 {
   "status": "error",
@@ -86,24 +97,20 @@ Kalau ada field yang kurang, hasilnya akan seperti ini:
 }
 ```
 
-Kalau ada isi yang bukan angka, API juga akan menolak input tersebut.
+---
 
-## Field yang dipakai
+## Deskripsi Field Input
 
-|Field|Tipe|Keterangan|
+| Field | Tipe Data | Keterangan |
 |---|---|---|
-|`luas_tanah`|float|Luas tanah dalam m²|
-|`luas_bangunan`|float|Luas bangunan dalam m²|
-|`jumlah_kamar`|int|Jumlah kamar tidur|
-|`jumlah_kamar_mandi`|int|Jumlah kamar mandi|
-|`jarak_pusat_kota`|float|Jarak ke pusat kota dalam km|
+| `luas_tanah` | `float` | Luas tanah dalam m² |
+| `luas_bangunan` | `float` | Luas bangunan dalam m² |
+| `jumlah_kamar` | `int` | Jumlah kamar tidur |
+| `jumlah_kamar_mandi` | `int` | Jumlah kamar mandi |
+| `jarak_pusat_kota` | `float` | Jarak ke pusat kota dalam km |
 
-## Dokumentasi API
+---
 
-FastAPI sudah menyediakan Swagger UI bawaan. Buka:
-
-`http://127.0.0.1:8000/docs`
-
-Di sana bisa coba endpoint langsung lewat browser.
-
-`notebook_latihan.ipynb` hanya dipakai saat training model, bukan saat menjalankan API.
+## Catatan Tambahan
+- Model dan scaler tersimpan pada direktori `models/`.
+- Notebook pada direktori `notebooks/` digunakan untuk eksperimen/EDA dan retraining model, bukan saat web service berjalan.
