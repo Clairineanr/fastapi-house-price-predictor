@@ -27,6 +27,6 @@ def root():
 
 @app.post("/predict")
 def predict_harga(data: RumahInput):
-    input_dict = data.dict()
+    input_dict = data.model_dump()
     hasil = predict(input_dict)
     return hasil
